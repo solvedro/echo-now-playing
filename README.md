@@ -101,12 +101,21 @@ adb -s 192.168.100.10:5555 shell monkey -p io.music_assistant.nowplaying -c andr
 
 ---
 
-### 3. Server Configuration
+### 3. Configuration & Music Assistant Server Setup
 
-On first launch (or via the **Settings (⚙️)** icon in the top right):
-1. Enter your **Music Assistant Server IP / Host** (e.g. `192.168.100.22` or Home Assistant IP).
+#### A. Music Assistant Server Configuration
+To allow Music Assistant to stream audio to your Echo Show 8, ensure the player provider is configured:
+1. Open the Music Assistant web UI at `http://<your-server-ip>:8095/#/settings/providers?types=player` (or via Home Assistant integration).
+2. Navigate to **Settings ➔ Providers ➔ Player Providers**.
+3. Verify that the **Slimproto (Squeezelite)** player provider is installed and enabled.
+4. Launch Squeezelite (or the Music Assistant companion app) on your Echo Show 8 to register it as an active audio sink.
+
+#### B. Echo Now Playing App Setup
+On first launch (or anytime via the **Settings (⚙️)** icon in the top-right corner):
+1. Enter your **Music Assistant Server IP / Host** (e.g. `192.168.100.22` or your Home Assistant IP).
 2. Enter the **WebSocket Port** (default: `8095`).
 3. Select your target player from the automatically discovered players list (e.g., `Echo Show 8`).
+4. The app will automatically connect, synchronize real-time metadata, fetch synchronized lyrics, and persist your settings across reboots.
 
 ---
 
