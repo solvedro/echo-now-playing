@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark"
+    android:keepScreenOn="true"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="16dp">
+
+    <!-- Top Left: Connection & Player Info Pill -->
+    <LinearLayout
+        android:id="@+id/statusPill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_rounded_card"
+        android:paddingStart="12dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/connectionDot"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/bg_play_button"
+            android:backgroundTint="#4CAF50" />
+
+        <TextView
+            android:id="@+id/txtPlayerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Echo Show 8"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtConnectionStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Connected"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Top Right: Action Buttons (Lyrics, Home, Apps, Overlay, Settings) -->
+    <LinearLayout
+        android:id="@+id/topActions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Lyrics Pill Button (matches screenshot top bar) -->
+        <LinearLayout
+            android:id="@+id/btnLyrics"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_rounded_card"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="12dp"
+            android:paddingEnd="14dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/imgLyricsIcon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_lyrics"
+                android:clickable="false"
+                android:focusable="false"
+                app:tint="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/txtLyricsBtnLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Lyrics"
+                android:clickable="false"
+                android:focusable="false"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Home Button -->
+        <ImageButton
+            android:id="@+id/btnHome"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_rounded_card"
+            android:contentDescription="Echo Home"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_home"
+            app:tint="@color/text_primary" />
+
+        <!-- App Drawer Button -->
+        <ImageButton
+            android:id="@+id/btnApps"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_rounded_card"
+            android:contentDescription="App Drawer"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_apps"
+            app:tint="@color/accent" />
+
+        <!-- Overlay / PiP Mode -->
+        <ImageButton
+            android:id="@+id/btnOverlay"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_rounded_card"
+            android:contentDescription="Floating Overlay Mode"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_picture_in_picture"
+            app:tint="@color/text_primary" />
+
+        <!-- Settings Button -->
+        <ImageButton
+            android:id="@+id/btnSettings"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_rounded_card"
+            android:contentDescription="Settings"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_settings"
+            app:tint="@color/text_primary" />
+    </LinearLayout>
+
+    <!-- ============================================================== -->
+    <!-- MODE 1: NORMAL PLAYER LAYOUT (When Lyrics is OFF)               -->
+    <!-- Left: Big Artwork Card, Right: Metadata & Full Controls        -->
+    <!-- ============================================================== -->
+    <LinearLayout
+        android:id="@+id/contentLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusPill">
+
+        <!-- Left Side: Album Artwork Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/artworkCard"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginEnd="28dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/surface_card"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="6dp">
+
+            <ImageView
+                android:id="@+id/imgAlbumArt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Album Artwork"
+                android:scaleType="centerCrop"
+                android:src="@drawable/baseline_library_music_24" />
+
+            <!-- Subtle Lyrics Hint badge at bottom-end of artwork -->
+            <LinearLayout
+                android:id="@+id/badgeLyricsHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="14dp"
+                android:background="@drawable/bg_rounded_card"
+                android:paddingStart="10dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_lyrics"
+                    app:tint="#00E5FF" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="Lyrics"
+                    android:textColor="#00E5FF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Right Side: Track Metadata & Controls -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.3"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <!-- Track Title -->
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Track Title"
+                android:textColor="@color/text_primary"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <!-- Artist Name -->
+            <TextView
+                android:id="@+id/txtArtist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Artist Name"
+                android:textColor="@color/accent"
+                android:textSize="22sp"
+                android:textStyle="normal" />
+
+            <!-- Album Name -->
+            <TextView
+                android:id="@+id/txtAlbum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Album Name"
+                android:textColor="@color/text_secondary"
+                android:textSize="16sp" />
+
+            <!-- Progress SeekBar & Timers -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <SeekBar
+                    android:id="@+id/seekBarProgress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="1000"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:progressBackgroundTint="#40FFFFFF"
+                    android:progressTint="@color/primary"
+                    android:thumbTint="@color/primary" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtElapsed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txtDuration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Playback Control Buttons (Prev, Play/Pause, Next) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnPrevious"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Previous"
+                    android:padding="14dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/baseline_skip_previous_24"
+                    app:tint="@color/text_primary" />
+
+                <ImageButton
+                    android:id="@+id/btnPlayPause"
+                    android:layout_width="76dp"
+                    android:layout_height="76dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginEnd="28dp"
+                    android:background="@drawable/bg_play_button"
+                    android:contentDescription="Play/Pause"
+                    android:padding="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/baseline_play_arrow_24"
+                    app:tint="@color/text_primary" />
+
+                <ImageButton
+                    android:id="@+id/btnNext"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Next"
+                    android:padding="14dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/baseline_skip_next_24"
+                    app:tint="@color/text_primary" />
+            </LinearLayout>
+
+            <!-- Volume Control Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnMute"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Mute"
+                    android:padding="6dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_volume_up"
+                    app:tint="@color/text_secondary" />
+
+                <SeekBar
+                    android:id="@+id/seekBarVolume"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:max="100"
+                    android:progress="70"
+                    android:progressBackgroundTint="#40FFFFFF"
+                    android:progressTint="@color/accent"
+                    android:thumbTint="@color/accent" />
+
+                <TextView
+                    android:id="@+id/txtVolumePercent"
+                    android:layout_width="44dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="70%"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ============================================================== -->
+    <!-- MODE 2: LYRICS MODE LAYOUT (Matches Screenshot Exact Design)    -->
+    <!-- Left: Artwork & Centered Metadata                              -->
+    <!-- Right: Borderless Floating Synchronized Lyrics                  -->
+    <!-- Bottom: Progress Bar & Media Controls                          -->
+    <!-- ============================================================== -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lyricsPlayerLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusPill">
+
+        <!-- Left Column: Artwork + Title + Album + Artist (Centered underneath) -->
+        <LinearLayout
+            android:id="@+id/lyricsLeftColumn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintBottom_toTopOf="@id/lyricsBottomControls"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.42">
+
+            <!-- Square Album Artwork Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lyricsArtworkCard"
+                android:layout_width="230dp"
+                android:layout_height="230dp"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/surface_card"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="8dp">
+
+                <ImageView
+                    android:id="@+id/imgLyricsAlbumArt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Album Artwork"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/baseline_library_music_24" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- Track Title (bold white, centered like screenshot) -->
+            <TextView
+                android:id="@+id/txtLyricsTrackTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="21 Questions"
+                android:textColor="@color/text_primary"
+                android:textSize="23sp"
+                android:textStyle="bold" />
+
+            <!-- Album Name (secondary text, centered) -->
+            <TextView
+                android:id="@+id/txtLyricsAlbumName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="Get Rich or Die Tryin'"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp" />
+
+            <!-- Artist Name (centered like screenshot) -->
+            <TextView
+                android:id="@+id/txtLyricsArtistName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="50 Cent"
+                android:textColor="#C0FFFFFF"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Right Column: Borderless Floating Synchronized Lyrics -->
+        <FrameLayout
+            android:id="@+id/lyricsRightColumn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintBottom_toTopOf="@id/lyricsBottomControls"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lyricsLeftColumn"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Floating lyrics RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerLyrics"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="140dp"
+                android:paddingBottom="140dp"
+                android:scrollbars="none" />
+
+            <!-- Loading Indicator -->
+            <ProgressBar
+                android:id="@+id/progressLyricsLoading"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_gravity="center"
+                android:indeterminateTint="#00E5FF"
+                android:visibility="gone" />
+
+            <!-- Empty / Not Found Message -->
+            <TextView
+                android:id="@+id/txtLyricsEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="24dp"
+                android:text="No lyrics available for this track"
+                android:textColor="@color/text_secondary"
+                android:textSize="18sp"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- Bottom Controls Bar for Lyrics Mode (matching screenshot bottom bar) -->
+        <LinearLayout
+            android:id="@+id/lyricsBottomControls"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <!-- Progress Bar with Elapsed on left (00:45) and Duration on right (03:44) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp">
+
+                <TextView
+                    android:id="@+id/txtLyricsElapsed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
+
+                <SeekBar
+                    android:id="@+id/seekBarLyricsProgress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:max="1000"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:progressBackgroundTint="#40FFFFFF"
+                    android:progressTint="@color/primary"
+                    android:thumbTint="@color/primary" />
+
+                <TextView
+                    android:id="@+id/txtLyricsDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Bottom Row: Centered Playback Controls, Right Volume, Center Device Pill -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
+
+                <!-- Centered Transport Controls (Previous, Play/Pause circle, Next) -->
+                <LinearLayout
+                    android:id="@+id/lyricsTransportControls"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnLyricsPrevious"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Previous"
+                        android:padding="12dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/baseline_skip_previous_24"
+                        app:tint="@color/text_primary" />
+
+                    <ImageButton
+                        android:id="@+id/btnLyricsPlayPause"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/bg_play_button"
+                        android:contentDescription="Play/Pause"
+                        android:padding="14dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/baseline_pause_24"
+                        app:tint="@color/text_primary" />
+
+                    <ImageButton
+                        android:id="@+id/btnLyricsNext"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Next"
+                        android:padding="12dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/baseline_skip_next_24"
+                        app:tint="@color/text_primary" />
+                </LinearLayout>
+
+                <!-- Volume on Right -->
+                <LinearLayout
+                    android:id="@+id/lyricsVolumeContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_volume_up"
+                        app:tint="@color/text_secondary" />
+
+                    <SeekBar
+                        android:id="@+id/seekBarLyricsVolume"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:max="100"
+                        android:progress="70"
+                        android:progressBackgroundTint="#40FFFFFF"
+                        android:progressTint="@color/accent"
+                        android:thumbTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/txtLyricsVolumePercent"
+                        android:layout_width="38dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="70%"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Center Bottom Device Tag Pill (e.g. Echo Show 8) -->
+                <TextView
+                    android:id="@+id/txtLyricsDevicePill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lyricsTransportControls"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/bg_rounded_card"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="Echo Show 8"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Ambient / Idle State Overlay (When stopped / nothing playing) -->
+    <LinearLayout
+        android:id="@+id/ambientLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_dark"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextClock
+            android:id="@+id/clockView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format12Hour="hh:mm a"
+            android:format24Hour="HH:mm"
+            android:textColor="@color/text_primary"
+            android:textSize="64sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtAmbientMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Music Assistant Ready • Echo Show 8"
+            android:textColor="@color/text_secondary"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Play music via Squeezelite to display artwork"
+            android:textColor="@color/text_hint"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/btnAmbientHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rounded_card"
+                android:text="Home"
+                android:textColor="@color/text_primary" />
+
+            <Button
+                android:id="@+id/btnAmbientApps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/bg_rounded_card"
+                android:text="Apps"
+                android:textColor="@color/accent" />
+
+            <Button
+                android:id="@+id/btnAmbientSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/bg_rounded_card"
+                android:text="Settings"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

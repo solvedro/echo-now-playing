@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/overlayRoot"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <!-- Collapsed Minimal Dot (Bubble) -->
+    <FrameLayout
+        android:id="@+id/bubbleView"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_gravity="top|start"
+        android:background="@drawable/bg_floating_bubble"
+        android:clickable="true"
+        android:focusable="true"
+        android:elevation="6dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imgBubbleIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_apps"
+            app:tint="@color/accent" />
+    </FrameLayout>
+
+    <!-- Expanded Card View -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/overlayCard"
+        android:layout_width="430dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#F216161D"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="12dp">
+
+        <LinearLayout
+            android:id="@+id/overlayContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <!-- Top Navigation Bar (Expandable Options List) -->
+            <LinearLayout
+                android:id="@+id/navOptionsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:paddingBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <!-- Back button -->
+                    <Button
+                        android:id="@+id/btnNavBack"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_nav_action_button"
+                        android:drawableStart="@drawable/ic_arrow_back"
+                        android:drawableTint="@color/text_primary"
+                        android:text="@string/nav_back"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- Home button -->
+                    <Button
+                        android:id="@+id/btnNavHome"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_nav_action_button"
+                        android:drawableStart="@drawable/ic_home"
+                        android:drawableTint="@color/text_primary"
+                        android:text="@string/nav_home"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- Apps button (App Drawer) -->
+                    <Button
+                        android:id="@+id/btnNavApps"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_nav_action_button"
+                        android:drawableStart="@drawable/ic_apps"
+                        android:drawableTint="@color/accent"
+                        android:text="@string/nav_apps"
+                        android:textColor="@color/accent"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- Player button (Now Playing) -->
+                    <Button
+                        android:id="@+id/btnNavPlayer"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_nav_action_button"
+                        android:drawableStart="@drawable/baseline_library_music_24"
+                        android:drawableTint="@color/text_primary"
+                        android:text="@string/nav_player"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp" />
+
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#20FFFFFF" />
+            </LinearLayout>
+
+            <!-- Main Now Playing Row (Always visible in card mode, draggable!) -->
+            <LinearLayout
+                android:id="@+id/mainPlayerRow"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Artwork Thumbnail (Clickable to open full MainActivity) -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardArtwork"
+                    android:layout_width="74dp"
+                    android:layout_height="74dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/surface_card">
+
+                    <ImageView
+                        android:id="@+id/imgOverlayArtwork"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/baseline_library_music_24" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- Title & Artist & Progress -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="10dp">
+
+                    <TextView
+                        android:id="@+id/txtOverlayTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/no_media"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtOverlayArtist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/accent"
+                        android:textSize="12sp" />
+
+                    <ProgressBar
+                        android:id="@+id/overlayProgress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_marginTop="6dp"
+                        android:max="1000"
+                        android:progress="0"
+                        android:progressTint="@color/primary"
+                        android:progressBackgroundTint="#30FFFFFF" />
+                </LinearLayout>
+
+                <!-- Right Controls: Toggle Nav, Play/Pause, Next, Close -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical|end">
+
+                    <!-- Top row: Options (Nav toggle) and Close -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <!-- Options Toggle Button -->
+                        <ImageButton
+                            android:id="@+id/btnOverlayToggleNav"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_nav_action_button"
+                            android:padding="8dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_apps"
+                            app:tint="@color/accent" />
+
+                        <!-- Close Button -->
+                        <ImageButton
+                            android:id="@+id/btnOverlayClose"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:layout_marginStart="8dp"
+                            android:background="@android:color/transparent"
+                            android:padding="8dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_close"
+                            app:tint="@color/text_hint" />
+                    </LinearLayout>
+
+                    <!-- Bottom row: Play/Pause and Next -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="4dp">
+
+                        <ImageButton
+                            android:id="@+id/btnOverlayPlayPause"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_play_button"
+                            android:padding="9dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/baseline_play_arrow_24"
+                            app:tint="@color/text_primary" />
+
+                        <ImageButton
+                            android:id="@+id/btnOverlayNext"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="6dp"
+                            android:background="@android:color/transparent"
+                            android:padding="7dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/baseline_skip_next_24"
+                            app:tint="@color/text_primary" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>
