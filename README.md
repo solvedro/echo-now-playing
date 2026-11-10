@@ -4,6 +4,18 @@ A dedicated, full-featured **Now Playing** client and **App Launcher Overlay** d
 
 ---
 
+## 📸 Screenshots
+
+| Standard Player | Synchronized Lyrics (Karaoke) |
+|:---:|:---:|
+| ![Standard Player](docs/screenshots/player_standard.png) | ![Synchronized Lyrics](docs/screenshots/player_lyrics.png) |
+
+| Floating Navigation Overlay | Installed Apps Drawer |
+|:---:|:---:|
+| ![Floating Navigation Overlay](docs/screenshots/overlay_navigation.png) | ![Installed Apps Drawer](docs/screenshots/app_drawer.png) |
+
+---
+
 ## ✨ Features
 
 * **🎨 Music Assistant Web Layout Match:**
